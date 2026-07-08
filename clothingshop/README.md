@@ -1,14 +1,14 @@
-# 👗 StyleShop — Online Clothing E-Shop
+#  StyleShop — Online Clothing E-Shop
  
 
-## 🛠️ Tech Stack
+##  Tech Stack
 - **Backend:** Java 17 + Spring Boot 3.x
 - **Frontend:** Thymeleaf + CSS
 - **Database:** MySQL
 - **Security:** Spring Security (BCrypt)
 - **ORM:** Spring Data JPA / Hibernate
 
-## 📁 Αρχιτεκτονική (Domain-Driven Design)
+##  Αρχιτεκτονική (Domain-Driven Design)
 ```
 src/main/java/com/eshop/clothingshop/
 ├── model/          → Entities: Product, User, Order, OrderItem
@@ -19,7 +19,7 @@ src/main/java/com/eshop/clothingshop/
 └── config/         → DataInitializer (seed data)
 ```
 
-## ⚙️ Ρύθμιση & Εκκίνηση
+##  Ρύθμιση & Εκκίνηση
 
 ### 1. MySQL
 ```sql
@@ -41,13 +41,13 @@ mvn spring-boot:run
 
 Η εφαρμογή τρέχει στο: **http://localhost:8080**
 
-## 👤 Default Accounts (δημιουργούνται αυτόματα)
+##  Default Accounts (δημιουργούνται αυτόματα)
 
 | Role  | Username | Password  |
 |-------|----------|-----------|
 | Admin | admin    | admin123  |
 
-## 🗺️ URLs
+##  URLs
 | URL | Περιγραφή |
 |-----|-----------|
 | `/` | Αρχική → redirect στα products |
@@ -60,16 +60,16 @@ mvn spring-boot:run
 | `/admin/products` | CRUD Προϊόντων |
 | `/admin/orders` | Διαχείριση Παραγγελιών |
 
-## 🧪 Testing
+##  Testing
 - Unit tests: `mvn test`
 - Integration: Postman collection (αν προστεθεί REST API)
 
-## 📦 Domain Model
+##  Domain Model
 ```
 Product ←──── OrderItem ────→ Order ←──── User
 ```
 
-## 🚀 Docker (προαιρετικά)
+##  Docker (προαιρετικά)
 ```bash
 docker run --name clothingshop-db \
   -e MYSQL_ROOT_PASSWORD=rootpass \
