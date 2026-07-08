@@ -60,19 +60,11 @@ mvn spring-boot:run
 | `/admin/products` | CRUD Προϊόντων |
 | `/admin/orders` | Διαχείριση Παραγγελιών |
 
-##  Testing
-- Unit tests: `mvn test`
-- Integration: Postman collection (αν προστεθεί REST API)
+
 
 ##  Domain Model
 ```
 Product ←──── OrderItem ────→ Order ←──── User
 ```
 
-##  Docker (προαιρετικά)
-```bash
-docker run --name clothingshop-db \
-  -e MYSQL_ROOT_PASSWORD=rootpass \
-  -e MYSQL_DATABASE=clothingshop \
-  -p 3306:3306 -d mysql:8
-```
+
