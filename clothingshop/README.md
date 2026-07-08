@@ -1,5 +1,5 @@
 # 👗 StyleShop — Online Clothing E-Shop
-**Coding Factory 10 | Τελικό Project | ΟΠΑ**
+ 
 
 ## 🛠️ Tech Stack
 - **Backend:** Java 17 + Spring Boot 3.x
