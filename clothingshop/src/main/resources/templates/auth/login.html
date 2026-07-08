@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="el" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Σύνδεση - StyleShop</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+</head>
+<body class="auth-page">
+
+<div class="auth-container">
+    <div class="auth-card">
+        <a th:href="@{/}" class="auth-brand">👗 StyleShop</a>
+        <h2>Καλώς ήρθατε!</h2>
+        <p class="auth-subtitle">Συνδεθείτε στον λογαριασμό σας</p>
+
+        <div th:if="${error}" class="alert alert-error" th:text="${error}"></div>
+        <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
+
+        <form th:action="@{/auth/login}" method="post" class="auth-form">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username"
+                       placeholder="Το username σας" required class="form-control"/>
+            </div>
+            <div class="form-group">
+                <label for="password">Κωδικός</label>
+                <input type="password" id="password" name="password"
+                       placeholder="Ο κωδικός σας" required class="form-control"/>
+            </div>
+            <button type="submit" class="btn-primary btn-full">Σύνδεση</button>
+        </form>
+
+        <p class="auth-switch">
+            Δεν έχετε λογαριασμό;
+            <a th:href="@{/auth/register}">Εγγραφείτε εδώ</a>
+        </p>
+    </div>
+</div>
+
+</body>
+</html>

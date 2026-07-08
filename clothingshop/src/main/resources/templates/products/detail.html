@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="el" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title th:text="${product.name} + ' - StyleShop'">Προϊόν</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="nav-container">
+        <a th:href="@{/}" class="nav-brand">👗 StyleShop</a>
+        <div class="nav-links">
+            <a th:href="@{/products}">Προϊόντα</a>
+            <sec:authorize access="isAuthenticated()">
+                <a th:href="@{/orders}">Παραγγελίες μου</a>
+            </sec:authorize>
+            <sec:authorize access="hasRole('ADMIN')">
+                <a th:href="@{/admin}" class="admin-link">⚙️ Admin</a>
+            </sec:authorize>
+            <sec:authorize access="isAnonymous()">
+                <a th:href="@{/auth/login}">Σύνδεση</a>
+                <a th:href="@{/auth/register}" class="btn-primary">Εγγραφή</a>
+            </sec:authorize>
+            <sec:authorize access="isAuthenticated()">
+                <span class="user-name">👤 <sec:authentication property="name"/></span>
+                <a th:href="@{/auth/logout}">Αποσύνδεση</a>
+            </sec:authorize>
+        </div>
+    </div>
+</nav>
+
+<main class="main-content">
+    <a th:href="@{/products}" class="back-link">← Πίσω στα Προϊόντα</a>
+
+    <div class="product-detail">
+        <div class="product-image-large">
+            <img th:src="${product.imageUrl}" th:alt="${product.name}"
+                 onerror="this.src='https://via.placeholder.com/500x500?text=Εικόνα'"/>
+        </div>
+        <div class="product-detail-info">
+            <span class="product-category-badge" th:text="${product.category}">Κατηγορία</span>
+            <h1 th:text="${product.name}">Όνομα Προϊόντος</h1>
+            <p class="detail-price" th:text="${product.price} + ' €'">Τιμή</p>
+            <p class="detail-description" th:text="${product.description}">Περιγραφή</p>
+
+            <div class="detail-meta">
+                <div><strong>Μέγεθος:</strong> <span th:text="${product.size}">-</span></div>
+                <div><strong>Χρώμα:</strong> <span th:text="${product.color}">-</span></div>
+                <div><strong>Απόθεμα:</strong>
+                    <span th:text="${product.stock}"
+                          th:classappend="${product.stock < 5 ? 'low-stock' : ''}">-</span>
+                </div>
+            </div>
+
+            <!-- Order form (μόνο για logged in users) -->
+            <sec:authorize access="isAuthenticated()">
+                <div th:if="${product.stock > 0}">
+                    <form th:action="@{/orders/checkout}" method="post" class="order-form">
+                        <input type="hidden" name="productIds" th:value="${product.id}"/>
+                        <div class="form-group">
+                            <label>Ποσότητα:</label>
+                            <input type="number" name="quantities" value="1"
+                                   min="1" th:max="${product.stock}" class="qty-input"/>
+                        </div>
+                        <div class="form-group">
+                            <label>Διεύθυνση αποστολής:</label>
+                            <input type="text" name="address" placeholder="π.χ. Πατησίων 76, Αθήνα"
+                                   required class="form-control"/>
+                        </div>
+                        <button type="submit" class="btn-order">🛒 Παραγγελία τώρα</button>
+                    </form>
+                </div>
+                <div th:if="${product.stock == 0}" class="out-of-stock">
+                    ❌ Εξαντλήθηκε
+                </div>
+            </sec:authorize>
+
+            <sec:authorize access="isAnonymous()">
+                <div class="login-prompt">
+                    <p>Συνδεθείτε για να παραγγείλετε</p>
+                    <a th:href="@{/auth/login}" class="btn-primary">Σύνδεση</a>
+                </div>
+            </sec:authorize>
+        </div>
+    </div>
+</main>
+
+<footer class="footer">
+    <p>© 2026 StyleShop | Coding Factory 10 - ΟΠΑ</p>
+</footer>
+
+</body>
+</html>

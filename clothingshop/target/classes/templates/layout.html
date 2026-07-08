@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="el" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title th:text="${title} ?: 'StyleShop'">StyleShop</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="nav-container">
+        <a th:href="@{/}" class="nav-brand">👗 StyleShop</a>
+        <div class="nav-links">
+            <a th:href="@{/products}">Προϊόντα</a>
+            <sec:authorize access="isAuthenticated()">
+                <a th:href="@{/orders}">Παραγγελίες μου</a>
+            </sec:authorize>
+            <sec:authorize access="hasRole('ADMIN')">
+                <a th:href="@{/admin}" class="admin-link">⚙️ Admin</a>
+            </sec:authorize>
+            <sec:authorize access="isAnonymous()">
+                <a th:href="@{/auth/login}">Σύνδεση</a>
+                <a th:href="@{/auth/register}" class="btn-primary">Εγγραφή</a>
+            </sec:authorize>
+            <sec:authorize access="isAuthenticated()">
+                <span class="user-name">👤 <sec:authentication property="name"/></span>
+                <a th:href="@{/auth/logout}">Αποσύνδεση</a>
+            </sec:authorize>
+        </div>
+    </div>
+</nav>
+
+<main class="main-content">
+    <!-- Flash messages -->
+    <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
+    <div th:if="${error}" class="alert alert-error" th:text="${error}"></div>
+
+    <th:block th:replace="${content}"/>
+</main>
+
+<footer class="footer">
+    <p>© 2026 StyleShop | Coding Factory 10 - ΟΠΑ</p>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="el" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Παραγγελίες μου - StyleShop</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="nav-container">
+        <a th:href="@{/}" class="nav-brand">👗 StyleShop</a>
+        <div class="nav-links">
+            <a th:href="@{/products}">Προϊόντα</a>
+            <a th:href="@{/orders}" class="active">Παραγγελίες μου</a>
+            <sec:authorize access="hasRole('ADMIN')">
+                <a th:href="@{/admin}" class="admin-link">⚙️ Admin</a>
+            </sec:authorize>
+            <span class="user-name">👤 <sec:authentication property="name"/></span>
+            <a th:href="@{/auth/logout}">Αποσύνδεση</a>
+        </div>
+    </div>
+</nav>
+
+<main class="main-content">
+    <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
+
+    <h1>Παραγγελίες μου</h1>
+
+    <div th:if="${orders.isEmpty()}" class="empty-state">
+        <p>Δεν έχετε κάνει ακόμα παραγγελίες.</p>
+        <a th:href="@{/products}" class="btn-primary">Ξεκινήστε τώρα!</a>
+    </div>
+
+    <div class="orders-list" th:if="${!orders.isEmpty()}">
+        <div class="order-card" th:each="order : ${orders}">
+            <div class="order-header">
+                <div>
+                    <strong>Παραγγελία #<span th:text="${order.id}"></span></strong>
+                    <span th:text="${#temporals.format(order.orderDate, 'dd/MM/yyyy HH:mm')}">Ημ/νία</span>
+                </div>
+                <span class="status-badge"
+                      th:text="${order.status}"
+                      th:classappend="'status-' + ${order.status.name().toLowerCase()}">Status</span>
+            </div>
+            <div class="order-items">
+                <div class="order-item" th:each="item : ${order.items}">
+                    <span th:text="${item.product.name}">Προϊόν</span>
+                    <span>x<span th:text="${item.quantity}"></span></span>
+                    <span th:text="${item.price} + ' €'">Τιμή</span>
+                </div>
+            </div>
+            <div class="order-footer">
+                <strong>Σύνολο: <span th:text="${order.totalPrice} + ' €'"></span></strong>
+                <span th:text="'📍 ' + ${order.shippingAddress}">Διεύθυνση</span>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer class="footer">
+    <p>© 2026 StyleShop | Coding Factory 10 - ΟΠΑ</p>
+</footer>
+
+</body>
+</html>

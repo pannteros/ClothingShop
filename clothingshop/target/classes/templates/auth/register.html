@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="el" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Εγγραφή - StyleShop</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+</head>
+<body class="auth-page">
+
+<div class="auth-container">
+    <div class="auth-card">
+        <a th:href="@{/}" class="auth-brand">👗 StyleShop</a>
+        <h2>Δημιουργία Λογαριασμού</h2>
+        <p class="auth-subtitle">Εγγραφείτε δωρεάν</p>
+
+        <div th:if="${error}" class="alert alert-error" th:text="${error}"></div>
+
+        <form th:action="@{/auth/register}" method="post" class="auth-form">
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Όνομα</label>
+                    <input type="text" name="firstName" placeholder="Όνομα" class="form-control"/>
+                </div>
+                <div class="form-group">
+                    <label>Επώνυμο</label>
+                    <input type="text" name="lastName" placeholder="Επώνυμο" class="form-control"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Username *</label>
+                <input type="text" name="username" placeholder="Επιλέξτε username" required class="form-control"/>
+            </div>
+            <div class="form-group">
+                <label>Email *</label>
+                <input type="email" name="email" placeholder="email@example.com" required class="form-control"/>
+            </div>
+            <div class="form-group">
+                <label>Κωδικός *</label>
+                <input type="password" name="password" placeholder="Τουλάχιστον 6 χαρακτήρες" required class="form-control"/>
+            </div>
+            <button type="submit" class="btn-primary btn-full">Εγγραφή</button>
+        </form>
+
+        <p class="auth-switch">
+            Έχετε ήδη λογαριασμό;
+            <a th:href="@{/auth/login}">Συνδεθείτε εδώ</a>
+        </p>
+    </div>
+</div>
+
+</body>
+</html>

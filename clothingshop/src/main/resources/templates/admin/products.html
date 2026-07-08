@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="el" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Διαχείριση Προϊόντων - Admin</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+</head>
+<body>
+
+<nav class="navbar admin-navbar">
+    <div class="nav-container">
+        <a th:href="@{/admin}" class="nav-brand">⚙️ Admin Panel</a>
+        <div class="nav-links">
+            <a th:href="@{/admin/products}" class="active">Προϊόντα</a>
+            <a th:href="@{/admin/orders}">Παραγγελίες</a>
+            <a th:href="@{/products}">← Κατάστημα</a>
+            <a th:href="@{/auth/logout}">Αποσύνδεση</a>
+        </div>
+    </div>
+</nav>
+
+<main class="main-content">
+    <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
+
+    <div class="page-header">
+        <h1>Προϊόντα</h1>
+        <a th:href="@{/admin/products/new}" class="btn-primary">+ Νέο Προϊόν</a>
+    </div>
+
+    <table class="admin-table">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Εικόνα</th>
+            <th>Όνομα</th>
+            <th>Κατηγορία</th>
+            <th>Τιμή</th>
+            <th>Απόθεμα</th>
+            <th>Διαθέσιμο</th>
+            <th>Ενέργειες</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="product : ${products}">
+            <td th:text="${product.id}"></td>
+            <td><img th:src="${product.imageUrl}" width="50" height="50" style="object-fit:cover; border-radius:4px;"
+                     onerror="this.src='https://via.placeholder.com/50'"/></td>
+            <td th:text="${product.name}"></td>
+            <td th:text="${product.category}"></td>
+            <td th:text="${product.price} + ' €'"></td>
+            <td th:text="${product.stock}"
+                th:classappend="${product.stock < 5 ? 'low-stock' : ''}"></td>
+            <td th:text="${product.available ? '✅' : '❌'}"></td>
+            <td>
+                <a th:href="@{/admin/products/{id}/edit(id=${product.id})}" class="btn-edit">Επεξεργασία</a>
+                <form th:action="@{/admin/products/{id}/delete(id=${product.id})}" method="post"
+                      style="display:inline"
+                      onsubmit="return confirm('Σίγουρα θέλετε να διαγράψετε αυτό το προϊόν;')">
+                    <button type="submit" class="btn-delete">Διαγραφή</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</main>
+
+<footer class="footer"><p>© 2026 StyleShop | Admin Panel</p></footer>
+</body>
+</html>

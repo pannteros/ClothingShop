@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="el" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Admin Dashboard - StyleShop</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+</head>
+<body>
+
+<nav class="navbar admin-navbar">
+    <div class="nav-container">
+        <a th:href="@{/admin}" class="nav-brand">⚙️ Admin Panel</a>
+        <div class="nav-links">
+            <a th:href="@{/admin/products}">Προϊόντα</a>
+            <a th:href="@{/admin/orders}">Παραγγελίες</a>
+            <a th:href="@{/products}">← Κατάστημα</a>
+            <a th:href="@{/auth/logout}">Αποσύνδεση</a>
+        </div>
+    </div>
+</nav>
+
+<main class="main-content">
+    <h1>Dashboard</h1>
+
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-number" th:text="${totalProducts}">0</div>
+            <div class="stat-label">Προϊόντα</div>
+            <a th:href="@{/admin/products}">Διαχείριση →</a>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number" th:text="${totalOrders}">0</div>
+            <div class="stat-label">Παραγγελίες</div>
+            <a th:href="@{/admin/orders}">Διαχείριση →</a>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number" th:text="${totalUsers}">0</div>
+            <div class="stat-label">Χρήστες</div>
+        </div>
+    </div>
+
+    <div class="quick-actions">
+        <h2>Γρήγορες ενέργειες</h2>
+        <a th:href="@{/admin/products/new}" class="btn-primary">+ Νέο Προϊόν</a>
+        <a th:href="@{/admin/orders}" class="btn-secondary">Δες Παραγγελίες</a>
+    </div>
+</main>
+
+<footer class="footer">
+    <p>© 2026 StyleShop | Admin Panel</p>
+</footer>
+
+</body>
+</html>

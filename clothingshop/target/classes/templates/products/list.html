@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="el" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Προϊόντα - StyleShop</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="nav-container">
+        <a th:href="@{/}" class="nav-brand">👗 StyleShop</a>
+        <div class="nav-links">
+            <a th:href="@{/products}">Προϊόντα</a>
+            <sec:authorize access="isAuthenticated()">
+                <a th:href="@{/orders}">Παραγγελίες μου</a>
+            </sec:authorize>
+            <sec:authorize access="hasRole('ADMIN')">
+                <a th:href="@{/admin}" class="admin-link">⚙️ Admin</a>
+            </sec:authorize>
+            <sec:authorize access="isAnonymous()">
+                <a th:href="@{/auth/login}">Σύνδεση</a>
+                <a th:href="@{/auth/register}" class="btn-primary">Εγγραφή</a>
+            </sec:authorize>
+            <sec:authorize access="isAuthenticated()">
+                <span class="user-name">👤 <sec:authentication property="name"/></span>
+                <a th:href="@{/auth/logout}">Αποσύνδεση</a>
+            </sec:authorize>
+        </div>
+    </div>
+</nav>
+
+<main class="main-content">
+    <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
+    <div th:if="${error}" class="alert alert-error" th:text="${error}"></div>
+
+    <div class="page-header">
+        <h1>Συλλογή Ρούχων</h1>
+
+        <!-- Search -->
+        <form th:action="@{/products}" method="get" class="search-form">
+            <input type="text" name="search" placeholder="Αναζήτηση προϊόντος..."
+                   th:value="${search}"/>
+            <button type="submit">🔍</button>
+        </form>
+    </div>
+
+    <!-- Categories -->
+    <div class="categories">
+        <a th:href="@{/products}" th:classappend="${selectedCategory == null ? 'active' : ''}">Όλα</a>
+        <a th:each="cat : ${categories}"
+           th:href="@{/products(category=${cat})}"
+           th:text="${cat}"
+           th:classappend="${selectedCategory == cat ? 'active' : ''}">Κατηγορία</a>
+    </div>
+
+    <!-- Products Grid -->
+    <div class="products-grid" th:if="${!products.isEmpty()}">
+        <div class="product-card" th:each="product : ${products}">
+            <a th:href="@{/products/{id}(id=${product.id})}">
+                <img th:src="${product.imageUrl}" th:alt="${product.name}"
+                     onerror="this.src='https://via.placeholder.com/300x300?text=Εικόνα'"/>
+                <div class="product-info">
+                    <h3 th:text="${product.name}">Όνομα</h3>
+                    <p class="product-category" th:text="${product.category}">Κατηγορία</p>
+                    <p class="product-size" th:text="'Μέγεθος: ' + ${product.size}">Μέγεθος</p>
+                    <p class="product-price" th:text="${product.price} + ' €'">Τιμή</p>
+                    <p class="product-stock" th:text="'Απόθεμα: ' + ${product.stock}"
+                       th:classappend="${product.stock < 5 ? 'low-stock' : ''}">Απόθεμα</p>
+                </div>
+            </a>
+            <div class="product-actions">
+                <a th:href="@{/products/{id}(id=${product.id})}" class="btn-secondary">Λεπτομέρειες</a>
+            </div>
+        </div>
+    </div>
+
+    <div th:if="${products.isEmpty()}" class="empty-state">
+        <p>Δεν βρέθηκαν προϊόντα.</p>
+    </div>
+</main>
+
+<footer class="footer">
+    <p>© 2026 StyleShop | Coding Factory 10 - ΟΠΑ</p>
+</footer>
+
+</body>
+</html>

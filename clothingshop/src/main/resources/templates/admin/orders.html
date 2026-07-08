@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="el" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Παραγγελίες - Admin</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+</head>
+<body>
+
+<nav class="navbar admin-navbar">
+    <div class="nav-container">
+        <a th:href="@{/admin}" class="nav-brand">⚙️ Admin Panel</a>
+        <div class="nav-links">
+            <a th:href="@{/admin/products}">Προϊόντα</a>
+            <a th:href="@{/admin/orders}" class="active">Παραγγελίες</a>
+            <a th:href="@{/products}">← Κατάστημα</a>
+            <a th:href="@{/auth/logout}">Αποσύνδεση</a>
+        </div>
+    </div>
+</nav>
+
+<main class="main-content">
+    <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
+    <h1>Παραγγελίες</h1>
+
+    <div class="orders-list">
+        <div class="order-card" th:each="order : ${orders}">
+            <div class="order-header">
+                <div>
+                    <strong>Παραγγελία #<span th:text="${order.id}"></span></strong>
+                    <span>Χρήστης: <strong th:text="${order.user.username}"></strong></span>
+                    <span th:text="${#temporals.format(order.orderDate, 'dd/MM/yyyy HH:mm')}"></span>
+                </div>
+                <div class="order-status-form">
+                    <form th:action="@{/admin/orders/{id}/status(id=${order.id})}" method="post">
+                        <select name="status" class="form-control-sm">
+                            <option th:each="s : ${statuses}"
+                                    th:value="${s}"
+                                    th:text="${s}"
+                                    th:selected="${order.status == s}">Status</option>
+                        </select>
+                        <button type="submit" class="btn-edit">Ενημέρωση</button>
+                    </form>
+                </div>
+            </div>
+            <div class="order-items">
+                <div class="order-item" th:each="item : ${order.items}">
+                    <span th:text="${item.product.name}"></span>
+                    <span>x<span th:text="${item.quantity}"></span></span>
+                    <span th:text="${item.price} + ' €'"></span>
+                </div>
+            </div>
+            <div class="order-footer">
+                <strong>Σύνολο: <span th:text="${order.totalPrice} + ' €'"></span></strong>
+                <span th:text="'📍 ' + ${order.shippingAddress}"></span>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer class="footer"><p>© 2026 StyleShop | Admin Panel</p></footer>
+</body>
+</html>

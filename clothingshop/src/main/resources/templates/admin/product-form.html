@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="el" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Φόρμα Προϊόντος - Admin</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+</head>
+<body>
+
+<nav class="navbar admin-navbar">
+    <div class="nav-container">
+        <a th:href="@{/admin}" class="nav-brand">⚙️ Admin Panel</a>
+        <div class="nav-links">
+            <a th:href="@{/admin/products}">← Πίσω στα Προϊόντα</a>
+            <a th:href="@{/auth/logout}">Αποσύνδεση</a>
+        </div>
+    </div>
+</nav>
+
+<main class="main-content">
+    <h1 th:text="${product.id != null ? 'Επεξεργασία Προϊόντος' : 'Νέο Προϊόν'}">Φόρμα Προϊόντος</h1>
+
+    <form th:action="@{/admin/products/save}" method="post" class="admin-form">
+        <input type="hidden" name="id" th:value="${product.id}"/>
+
+        <div class="form-group">
+            <label>Όνομα *</label>
+            <input type="text" name="name" th:value="${product.name}" required class="form-control"/>
+        </div>
+        <div class="form-group">
+            <label>Περιγραφή</label>
+            <textarea name="description" rows="4" class="form-control" th:text="${product.description}"></textarea>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label>Τιμή (€) *</label>
+                <input type="number" name="price" th:value="${product.price}"
+                       step="0.01" min="0.01" required class="form-control"/>
+            </div>
+            <div class="form-group">
+                <label>Απόθεμα *</label>
+                <input type="number" name="stock" th:value="${product.stock}"
+                       min="0" required class="form-control"/>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label>Κατηγορία *</label>
+                <select name="category" class="form-control">
+                    <option value="Μπλούζες" th:selected="${product.category == 'Μπλούζες'}">Μπλούζες</option>
+                    <option value="Παντελόνια" th:selected="${product.category == 'Παντελόνια'}">Παντελόνια</option>
+
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Μέγεθος</label>
+                <select name="size" class="form-control">
+                    <option value="XS" th:selected="${product.size == 'XS'}">XS</option>
+                    <option value="S" th:selected="${product.size == 'S'}">S</option>
+                    <option value="M" th:selected="${product.size == 'M'}">M</option>
+                    <option value="L" th:selected="${product.size == 'L'}">L</option>
+                    <option value="XL" th:selected="${product.size == 'XL'}">XL</option>
+                    <option value="XXL" th:selected="${product.size == 'XXL'}">XXL</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Χρώμα</label>
+            <input type="text" name="color" th:value="${product.color}" class="form-control" placeholder="π.χ. Λευκό"/>
+        </div>
+        <div class="form-group">
+            <label>URL Εικόνας</label>
+            <input type="text" name="imageUrl" th:value="${product.imageUrl}"
+                   class="form-control" placeholder="https://..."/>
+        </div>
+        <div class="form-group checkbox-group">
+            <label>
+                <input type="checkbox" name="available" th:checked="${product.available}"/>
+                Διαθέσιμο
+            </label>
+        </div>
+        <div class="form-actions">
+            <button type="submit" class="btn-primary">💾 Αποθήκευση</button>
+            <a th:href="@{/admin/products}" class="btn-secondary">Ακύρωση</a>
+        </div>
+    </form>
+</main>
+
+<footer class="footer"><p>© 2026 StyleShop | Admin Panel</p></footer>
+</body>
+</html>
